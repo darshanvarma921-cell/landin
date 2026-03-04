@@ -1,511 +1,748 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>OneMed AI — Healthcare AI Operationalization Platform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<script>
-tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','sans-serif']},animation:{'float':'float 7s ease-in-out infinite','spin-slow':'spin 22s linear infinite'},keyframes:{float:{'0%,100%':{transform:'translateY(0)'},'50%':{transform:'translateY(-16px)'}}}}}}
-</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OneMed AI — Clinical Intelligence for Indian Hospitals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:#020C1B;font-family:'Plus Jakarta Sans',sans-serif;color:#F0F9FF;overflow-x:hidden}
-#hero-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.grid-bg{background-image:linear-gradient(rgba(14,165,233,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(14,165,233,.055) 1px,transparent 1px);background-size:54px 54px}
-.glass{background:rgba(8,20,42,.68);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(14,165,233,.13);border-radius:16px}
-.glass-h{transition:border-color .25s,background .25s,transform .25s,box-shadow .25s;cursor:pointer}
-.glass-h:hover{border-color:rgba(14,165,233,.3);background:rgba(14,165,233,.07);transform:translateY(-5px);box-shadow:0 22px 44px rgba(14,165,233,.11)}
-.glow{box-shadow:0 0 0 1px rgba(14,165,233,.18),0 0 36px rgba(14,165,233,.11)}
-.cta{background:#0EA5E9;box-shadow:0 0 26px rgba(14,165,233,.44),0 4px 14px rgba(14,165,233,.28);transition:background .2s,box-shadow .2s,transform .15s}
-.cta:hover{background:#38BDF8;box-shadow:0 0 40px rgba(14,165,233,.62),0 8px 22px rgba(14,165,233,.38);transform:translateY(-1px)}
-.grad{background:linear-gradient(135deg,#38BDF8 0%,#22D3EE 50%,#2DD4BF 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.nav-glass{background:rgba(2,12,27,.84);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-bottom:1px solid rgba(14,165,233,.1)}
-.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(14,165,233,.2),transparent)}
-.reveal{opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
-.reveal.on{opacity:1;transform:translateY(0)}
-.stat{background:linear-gradient(135deg,#38BDF8,#22D3EE);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:#020C1B}
-::-webkit-scrollbar-thumb{background:rgba(14,165,233,.24);border-radius:4px}
-.pulse{display:inline-block;position:relative}
-.pulse::after{content:'';position:absolute;inset:-3px;border-radius:50%;background:#0ea5e9;animation:pr 2.4s ease-out infinite;z-index:-1}
-@keyframes pr{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.1);opacity:0}}
-.aborder{position:relative;border-radius:18px}
-.aborder::before{content:'';position:absolute;inset:-1.5px;border-radius:18px;background:conic-gradient(from 0deg,#0ea5e9,#14b8a6,#22d3ee,#0ea5e9);animation:spin 7s linear infinite;opacity:.3;z-index:0}
-.aborder>*{position:relative;z-index:1}
-.dash3d{perspective:800px}
-.dashcard{transform:rotateX(9deg) rotateY(-5deg);transition:transform .5s cubic-bezier(.4,0,.2,1)}
-.dash3d:hover .dashcard{transform:rotateX(2deg) rotateY(-1deg)}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0A0A0F;
+    --bg2:      #0F0F18;
+    --accent:   #00E5CC;
+    --white:    #F0F0F2;
+    --grey-1:   #9898A8;
+    --grey-2:   #3A3A4A;
+    --grey-3:   #1E1E2A;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body:    'Inter', sans-serif;
+    --font-mono:    'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NOISE TEXTURE ─────────────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+  }
+
+  /* ── NAV ───────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 28px 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.4s ease, backdrop-filter 0.4s ease;
+  }
+  nav.scrolled {
+    background: rgba(10, 10, 15, 0.72);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: -0.01em;
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+  .nav-logo-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--grey-1);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-cta {
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    padding: 9px 20px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── HERO SECTION ──────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 56px;
+    padding-top: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* subtle horizontal rule across the top of content area */
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--grey-2) 30%, var(--grey-2) 70%, transparent);
+    opacity: 0.4;
+  }
+
+  /* ── HERO LEFT ─────────────────────────────────────────── */
+  .hero-left {
+    padding-right: 60px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .label-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .label-tag.visible { opacity: 1; transform: translateY(0); }
+  .label-tag::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(56px, 6.5vw, 100px);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--white);
+    margin-bottom: 32px;
+  }
+
+  .hero-title .line {
+    display: block;
+    overflow: hidden;
+  }
+  .hero-title .line-inner {
+    display: block;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .hero-title .line-inner.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .hero-title .line:nth-child(2) .line-inner { transition-delay: 0.08s; }
+  .hero-title .line:nth-child(3) .line-inner { transition-delay: 0.16s; }
+
+  .hero-title .accent-word {
+    color: var(--accent);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  .hero-body {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--grey-1);
+    line-height: 1.75;
+    max-width: 400px;
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease 0.35s, transform 0.7s ease 0.35s;
+  }
+  .hero-body.visible { opacity: 1; transform: translateY(0); }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease 0.48s, transform 0.7s ease 0.48s;
+  }
+  .hero-actions.visible { opacity: 1; transform: translateY(0); }
+
+  .btn-primary {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    padding: 14px 32px;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease;
+  }
+  .btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.12);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,204,0.18); }
+  .btn-primary:hover::after { opacity: 1; }
+
+  .btn-ghost {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--grey-1);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s ease, gap 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    cursor: pointer;
+    background: none; border: none;
+  }
+  .btn-ghost:hover { color: var(--white); gap: 14px; }
+  .btn-ghost svg { width: 14px; height: 14px; transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  .btn-ghost:hover svg { transform: translateX(3px); }
+
+  /* ── HERO RIGHT — VISUAL ───────────────────────────────── */
+  .hero-right {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+  }
+
+  /* The main visual: an SVG-based hospital workflow / clinical data art */
+  .visual-canvas {
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% + 60px);
+    height: 580px;
+    opacity: 0;
+    transition: opacity 1s ease 0.3s;
+  }
+  .visual-canvas.visible { opacity: 1; }
+
+  /* ── STATS STRIP ───────────────────────────────────────── */
+  .stats-strip {
+    border-top: 1px solid var(--grey-2);
+    padding: 52px 56px;
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .stats-strip.visible { opacity: 1; transform: translateY(0); }
+
+  .stat-item {
+    flex: 1;
+    padding: 0 48px 0 0;
+    border-right: 1px solid var(--grey-2);
+    margin-right: 48px;
+    cursor: default;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .stat-item:last-child { border-right: none; margin-right: 0; padding-right: 0; }
+  .stat-item:hover { transform: translateY(-3px); }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+  }
+  .stat-unit {
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--grey-1);
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--grey-1);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .stat-sublabel {
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--grey-2);
+    letter-spacing: 0.02em;
+  }
+
+  /* ── RESPONSIVE ────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 22px 24px; }
+    .nav-links { display: none; }
+
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 120px 24px 60px;
+      min-height: auto;
+      gap: 60px;
+    }
+    .hero-left { padding-right: 0; }
+    .hero-title { font-size: clamp(44px, 12vw, 72px); }
+    .hero-right {
+      height: 300px;
+      overflow: hidden;
+    }
+    .visual-canvas {
+      left: 0;
+      width: 100%;
+    }
+
+    .stats-strip {
+      flex-direction: column;
+      padding: 40px 24px;
+      gap: 36px;
+    }
+    .stat-item {
+      border-right: none;
+      border-bottom: 1px solid var(--grey-2);
+      padding: 0 0 36px 0;
+      margin: 0;
+      width: 100%;
+    }
+    .stat-item:last-child { border-bottom: none; padding-bottom: 0; }
+  }
+
+  /* ── REDUCED MOTION ────────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    .label-tag, .hero-title .line-inner, .hero-body,
+    .hero-actions, .visual-canvas, .stats-strip {
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
 </style>
 </head>
 <body>
-<div id="root"></div>
-<script type="text/babel">
-const {useState,useEffect,useRef}=React;
 
-/* ── Icons ── */
-const Ic={
-  Activity:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/></svg>,
-  Arrow:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
-  Brain:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/></svg>,
-  Building:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4"/><path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/></svg>,
-  Check:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>,
-  ChevD:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="m6 9 6 6 6-6"/></svg>,
-  Clock:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
-  DB:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>,
-  File:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>,
-  Menu:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>,
-  Shield:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>,
-  Trend:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>,
-  X:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
-  Zap:()=><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>,
-};
+<!-- ── NAV ──────────────────────────────────────────────── -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="OneMed AI home">
+    <span class="nav-logo-dot" aria-hidden="true"></span>
+    OneMed AI
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Platform</a></li>
+    <li><a href="#">Hospitals</a></li>
+    <li><a href="#">Research</a></li>
+    <li><a href="#">About</a></li>
+  </ul>
+  <a href="#" class="nav-cta" aria-label="Request a demo">Request Demo</a>
+</nav>
 
-/* ── Three.js Canvas ── */
-function HeroCanvas(){
-  const ref=useRef(null);
-  useEffect(()=>{
-    const canvas=ref.current;
-    if(!canvas||!window.THREE)return;
-    const T=window.THREE;
-    const W=canvas.offsetWidth,H=canvas.offsetHeight;
-    const renderer=new T.WebGLRenderer({canvas,alpha:true,antialias:true});
-    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-    renderer.setSize(W,H);
-    renderer.setClearColor(0x000000,0);
-    const scene=new T.Scene();
-    const cam=new T.PerspectiveCamera(55,W/H,0.1,500);
-    cam.position.set(0,0,32);
-    scene.add(new T.AmbientLight(0x0ea5e9,0.4));
-    const pl1=new T.PointLight(0x0ea5e9,3,80);pl1.position.set(12,10,10);scene.add(pl1);
-    const pl2=new T.PointLight(0x14b8a6,2,60);pl2.position.set(-12,-8,6);scene.add(pl2);
-    const pl3=new T.PointLight(0x38bdf8,1.5,60);pl3.position.set(0,0,20);scene.add(pl3);
-    const group=new T.Group();
-    const COLS=[0x0ea5e9,0x14b8a6,0x22d3ee,0x38bdf8,0x0891b2,0x2dd4bf];
-    const ND=[
-      {p:[0,0,0],r:1.4,c:0x0ea5e9},{p:[9,4,-2],r:.7,c:0x14b8a6},{p:[-9,3,-1],r:.75,c:0x22d3ee},
-      {p:[6,-5,1],r:.65,c:0x38bdf8},{p:[-6,-5,0],r:.7,c:0x0891b2},{p:[0,9,-3],r:.6,c:0x2dd4bf},
-      {p:[0,-9,-2],r:.65,c:0x14b8a6},{p:[13,0,-4],r:.5,c:0x0ea5e9},{p:[-13,1,-3],r:.55,c:0x22d3ee},
-      {p:[4,7,2],r:.6,c:0x38bdf8},{p:[-4,-7,2],r:.55,c:0x0ea5e9},{p:[10,-4,-2],r:.5,c:0x14b8a6},{p:[-10,-2,-1],r:.5,c:0x2dd4bf},
-    ];
-    const meshes=ND.map(({p,r,c})=>{
-      const mat=new T.MeshPhongMaterial({color:c,emissive:c,emissiveIntensity:.35,shininess:90,transparent:true,opacity:.88});
-      const mesh=new T.Mesh(new T.SphereGeometry(r,20,20),mat);
-      mesh.position.set(...p);group.add(mesh);
-      return{mesh,origin:[...p],phase:Math.random()*Math.PI*2,speed:.3+Math.random()*.5};
-    });
-    [1.9,2.4].forEach((r,i)=>{
-      const ring=new T.Mesh(new T.RingGeometry(r,r+.08,48),new T.MeshBasicMaterial({color:0x0ea5e9,transparent:true,opacity:.18-i*.06,side:T.DoubleSide}));
-      meshes[0].mesh.add(ring);
-    });
-    const lmat=new T.LineBasicMaterial({color:0x0ea5e9,transparent:true,opacity:.13});
-    [[0,1],[0,2],[0,3],[0,4],[0,5],[0,6],[1,9],[2,10],[3,11],[4,12],[1,7],[2,8],[5,9],[6,10]].forEach(([a,b])=>{
-      const pts=[meshes[a].mesh.position.clone(),meshes[b].mesh.position.clone()];
-      group.add(new T.Line(new T.BufferGeometry().setFromPoints(pts),lmat));
-    });
-    const pN=300,pP=new Float32Array(pN*3);
-    for(let i=0;i<pN*3;i++)pP[i]=(Math.random()-.5)*90;
-    const pGeo=new T.BufferGeometry();pGeo.setAttribute('position',new T.BufferAttribute(pP,3));
-    const particles=new T.Points(pGeo,new T.PointsMaterial({color:0x0ea5e9,size:.1,transparent:true,opacity:.3}));
-    scene.add(particles);scene.add(group);
-    let mx=0,my=0;
-    const onM=e=>{mx=(e.clientX/innerWidth-.5)*2;my=(e.clientY/innerHeight-.5)*2};
-    addEventListener('mousemove',onM);
-    const onR=()=>{const w=canvas.offsetWidth,h=canvas.offsetHeight;renderer.setSize(w,h);cam.aspect=w/h;cam.updateProjectionMatrix()};
-    addEventListener('resize',onR);
-    const clock=new T.Clock();let raf;
-    const tick=()=>{
-      raf=requestAnimationFrame(tick);
-      const t=clock.getElapsedTime();
-      group.rotation.y=t*.04+mx*.08;group.rotation.x=my*.04;
-      meshes.forEach(({mesh,origin,phase,speed})=>{
-        mesh.position.y=origin[1]+Math.sin(t*speed+phase)*.9;
-        mesh.position.x=origin[0]+Math.cos(t*speed*.65+phase)*.45;
-      });
-      particles.rotation.y=t*.015;
-      renderer.render(scene,cam);
-    };
-    tick();
-    return()=>{cancelAnimationFrame(raf);removeEventListener('mousemove',onM);removeEventListener('resize',onR);renderer.dispose()};
-  },[]);
-  return <canvas ref={ref} id="hero-canvas"/>;
-}
+<!-- ── HERO ──────────────────────────────────────────────── -->
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero-left">
+    <span class="label-tag" aria-label="Clinical AI for India">Clinical AI / India</span>
 
-/* ── Navbar ── */
-function Navbar(){
-  const [sc,setSc]=useState(false);
-  const [op,setOp]=useState(false);
-  useEffect(()=>{const h=()=>setSc(scrollY>24);addEventListener('scroll',h);return()=>removeEventListener('scroll',h)},[]);
-  const links=[{l:'Platform',h:'#platform'},{l:'Modules',h:'#modules'},{l:'Trust',h:'#trust'},{l:'Contact',h:'#cta'}];
-  return(
-    <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${sc?'nav-glass':''}`}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <a href="#" className="flex items-center gap-2.5 cursor-pointer">
-            <div className="w-8 h-8 rounded-lg bg-sky-500 flex items-center justify-center p-1.5 flex-shrink-0"><Ic.Activity/></div>
-            <span className="font-bold text-lg tracking-tight text-white">OneMed <span className="text-sky-400">AI</span></span>
-          </a>
-          <div className="hidden md:flex items-center gap-7">
-            {links.map(l=><a key={l.l} href={l.h} className="text-slate-400 hover:text-white text-sm font-medium transition-colors duration-200 cursor-pointer">{l.l}</a>)}
-          </div>
-          <div className="hidden md:flex items-center gap-3">
-            <button className="text-slate-400 hover:text-white text-sm font-medium transition-colors cursor-pointer">Sign In</button>
-            <button className="cta px-4 py-2 rounded-lg text-white text-sm font-semibold cursor-pointer">Book a Demo</button>
-          </div>
-          <button onClick={()=>setOp(!op)} className="md:hidden text-slate-400 hover:text-white w-6 h-6 cursor-pointer">{op?<Ic.X/>:<Ic.Menu/>}</button>
-        </div>
-      </div>
-      {op&&<div className="md:hidden nav-glass border-t border-sky-900/30">
-        <div className="px-6 py-4 space-y-3">
-          {links.map(l=><a key={l.l} href={l.h} onClick={()=>setOp(false)} className="block text-slate-300 hover:text-white text-sm font-medium py-1 transition-colors cursor-pointer">{l.l}</a>)}
-          <button className="cta w-full mt-3 px-4 py-2.5 rounded-lg text-white text-sm font-semibold cursor-pointer">Book a Demo</button>
-        </div>
-      </div>}
-    </nav>
-  );
-}
+    <h1 class="hero-title" id="hero-heading">
+      <span class="line"><span class="line-inner">Medicine</span></span>
+      <span class="line"><span class="line-inner">runs on <em class="accent-word">data.</em></span></span>
+      <span class="line"><span class="line-inner">Finally.</span></span>
+    </h1>
 
-/* ── Hero ── */
-function Hero(){
-  return(
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      <div className="absolute inset-0 grid-bg"/>
-      <div className="absolute inset-0" style={{background:'radial-gradient(ellipse 88% 62% at 50% 38%,rgba(14,165,233,.14) 0%,transparent 68%)'}}/>
-      <HeroCanvas/>
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 text-sky-300 text-xs font-bold mb-7 uppercase tracking-widest">
-          <span className="pulse w-2 h-2 rounded-full bg-sky-400 flex-shrink-0 inline-block"/>
-          AI-Powered Revenue Cycle for Indian Hospitals
-        </div>
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-white leading-[1.07] tracking-tight mb-6">
-          Healthcare Ops.<br/><span className="grad">Fully Automated.</span>
-        </h1>
-        <p className="text-lg md:text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed font-light mb-3">
-          OneMed AI operationalizes intelligent automation for Tier 2 Indian hospital chains — claims processing, revenue cycle management, and AI-generated discharge documentation.
-        </p>
-        <p className="text-sm text-sky-400/60 font-medium mb-10">AB-PMJAY · CGHS · ECHS · TPA · State Schemes — unified in one platform</p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <button className="cta px-8 py-3.5 rounded-xl text-white font-semibold text-base cursor-pointer flex items-center gap-2">
-            Book a Free Demo <span className="w-4 h-4"><Ic.Arrow/></span>
-          </button>
-          <button className="glass glass-h px-8 py-3.5 rounded-xl text-slate-300 hover:text-white font-semibold text-base cursor-pointer">See How It Works</button>
-        </div>
-        <div className="grid grid-cols-3 gap-6 md:gap-10 max-w-xl mx-auto">
-          {[{v:'92%',l:'Claims Approval Rate'},{v:'3×',l:'Faster Discharge Docs'},{v:'40%',l:'RCM Cost Reduction'}].map(({v,l})=>(
-            <div key={l} className="text-center">
-              <div className="text-3xl md:text-4xl font-extrabold stat">{v}</div>
-              <div className="text-xs text-slate-500 mt-1 leading-snug">{l}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="absolute bottom-7 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-slate-600 text-xs">
-        Scroll <div className="w-4 h-4 animate-bounce"><Ic.ChevD/></div>
-      </div>
-    </section>
-  );
-}
+    <p class="hero-body">
+      OneMed AI transforms how Indian hospitals make decisions —
+      surfacing clinical insights in real time, at the bedside,
+      in every ward, without friction.
+    </p>
 
-/* ── Problem ── */
-function Problem(){
-  const items=[
-    {icon:<Ic.Clock/>,col:'rose',title:'Claims Take Weeks to Settle',body:'Manual TPA, CGHS, and ECHS submissions average 15–45 days. Cash flow dries up while billing teams wade through scheme-specific paperwork.',tag:'45-day avg settlement'},
-    {icon:<Ic.File/>,col:'amber',title:'Discharge Docs Are a Bottleneck',body:'Physicians spend 45+ minutes per discharge summary. ICD-10 undercoding and formatting errors trigger scheme rejections and billing delays.',tag:'45 min per summary'},
-    {icon:<Ic.Trend/>,col:'rose',title:'Revenue Leakage Is Invisible',body:'Undercoded procedures, unbilled consumables, missed pre-auth windows — Tier 2 chains lack the analytics tooling to surface revenue erosion.',tag:'12–18% revenue lost'},
-    {icon:<Ic.Building/>,col:'amber',title:'Scheme Complexity Kills Teams',body:'AB-PMJAY, CGHS, ECHS, state schemes — each with separate portals, tariff schedules, and documentation rules. No unified operational layer.',tag:'6+ schemes per hospital'},
-  ];
-  const cm={rose:{b:'border-rose-500/20',bg:'bg-rose-500/10',ic:'text-rose-400',tg:'bg-rose-500/10 border-rose-500/20 text-rose-300'},amber:{b:'border-amber-500/20',bg:'bg-amber-500/10',ic:'text-amber-400',tg:'bg-amber-500/10 border-amber-500/20 text-amber-300'}};
-  return(
-    <section id="platform" className="py-28">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-16 reveal">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-rose-500/30 bg-rose-500/10 text-rose-300 text-xs font-bold mb-5 uppercase tracking-widest">The Problem</div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">Indian Hospitals Lose <span className="text-rose-400">Crores</span><br className="hidden md:block"/> to Operational Friction</h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">Tier 2 regional chains run 30–40% administrative inefficiency. Revenue that should fund expansion is trapped in paperwork and siloed processes.</p>
-        </div>
-        <div className="grid sm:grid-cols-2 gap-5">
-          {items.map(({icon,col,title,body,tag},i)=>{const c=cm[col];return(
-            <div key={title} className="glass glass-h p-6 reveal" style={{transitionDelay:`${i*80}ms`}}>
-              <div className="flex items-start gap-4">
-                <div className={`w-10 h-10 rounded-xl border ${c.b} ${c.bg} ${c.ic} flex items-center justify-center p-2 flex-shrink-0`}>{icon}</div>
-                <div>
-                  <h3 className="text-white font-bold text-[15px] mb-2">{title}</h3>
-                  <p className="text-slate-400 text-sm leading-relaxed">{body}</p>
-                  <span className={`inline-block mt-3 px-2.5 py-0.5 rounded-md border text-xs font-semibold ${c.tg}`}>{tag}</span>
-                </div>
-              </div>
-            </div>
-          )})}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ── Solution ── */
-function Solution(){
-  const caps=['Auto Pre-Authorization','LLM Discharge Summaries','Claims Scrubbing Engine','Real-Time RCM Analytics','ICD-10 / CPT Auto-Coding','Denial Management','Multi-Scheme Routing','Compliance Audit Trail'];
-  const vp=[
-    {icon:<Ic.Zap/>,t:'Live in 3–4 Weeks',b:'Lightweight HIS integration. No rip-and-replace. Go live within a month.'},
-    {icon:<Ic.Shield/>,t:'Scheme-Compliant by Design',b:'Built-in rule engines for AB, CGHS, ECHS, and all major TPA protocols.'},
-    {icon:<Ic.Brain/>,t:'LLM-Powered Intelligence',b:'Clinical NLP for ICD-10 coding, doc generation, and denial prediction.'},
-  ];
-  return(
-    <section className="py-28 relative">
-      <div className="absolute inset-0" style={{background:'radial-gradient(ellipse 55% 45% at 50% 50%,rgba(14,165,233,.07) 0%,transparent 70%)'}}/>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16 reveal">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 text-sky-300 text-xs font-bold mb-5 uppercase tracking-widest">The Platform</div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">One Intelligence Layer.<br/><span className="grad">End-to-End Revenue Automation.</span></h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">OneMed AI integrates with your existing HIS/EMR and becomes the operational backbone — from patient admission through final claim settlement.</p>
-        </div>
-        <div className="reveal dash3d max-w-4xl mx-auto mb-12">
-          <div className="dashcard glass glow p-8 md:p-10 relative overflow-hidden">
-            <div className="absolute inset-0 grid-bg opacity-25"/>
-            <div className="relative z-10">
-              <div className="flex flex-col md:flex-row items-stretch gap-3 mb-8">
-                {[{l:'Your HIS / EMR',s:'Patient & Clinical Data',cls:'border-slate-600/60 text-slate-300'},null,{l:'OneMed AI',s:'Intelligence & Automation Layer',cls:'border-sky-500/50 text-sky-200 bg-sky-500/10 glow'},null,{l:'Scheme Portals',s:'AB · CGHS · ECHS · TPA',cls:'border-teal-600/50 text-teal-300'}].map((item,i)=>
-                  item===null
-                    ?<div key={i} className="hidden md:flex items-center justify-center text-sky-500/55 text-xl font-bold px-1">→</div>
-                    :<div key={i} className={`flex-1 px-4 py-3.5 rounded-xl border text-center ${item.cls}`}><div className="font-bold text-sm">{item.l}</div><div className="text-xs text-slate-500 mt-0.5">{item.s}</div></div>
-                )}
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {caps.map(c=><div key={c} className="flex items-center gap-2 text-xs text-slate-400"><span className="w-3.5 h-3.5 text-sky-400 flex-shrink-0"><Ic.Check/></span>{c}</div>)}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="grid sm:grid-cols-3 gap-4">
-          {vp.map(({icon,t,b},i)=>(
-            <div key={t} className="glass glass-h p-6 reveal" style={{transitionDelay:`${i*100}ms`}}>
-              <div className="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-500/20 text-sky-400 p-2 mb-4">{icon}</div>
-              <h3 className="text-white font-bold text-sm mb-2">{t}</h3>
-              <p className="text-slate-400 text-xs leading-relaxed">{b}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ── Modules ── */
-const MODS=[
-  {id:'rcm',label:'RCM',icon:<Ic.Trend/>,title:'Revenue Cycle Management',badge:'End-to-End RCM',tagline:'From admission eligibility to final collection — fully automated.',col:'sky',
-   feats:['Real-time eligibility verification across all schemes','Pre-authorization automation with AI document assembly','Undercoding detection — recover missed revenue automatically','Denial prediction engine before submission','Cash flow forecasting and CFO-ready dashboard','Automated follow-up workflows for pending settlements'],
-   metric:{v:'40%',l:'Reduction in revenue leakage'},sub:[{v:'6×',l:'Faster pre-auth'},{v:'98%',l:'Eligibility accuracy'}]},
-  {id:'claims',label:'Claims',icon:<Ic.Shield/>,title:'Claims Processing',badge:'TPA · CGHS · ECHS · AB-PMJAY',tagline:'Multi-scheme claim submission, tracking, and resubmission — one interface.',col:'teal',
-   feats:['Ayushman Bharat (AB-PMJAY) portal integration and submission','CGHS & ECHS claim packet auto-generation with attachments','TPA-specific rule engines for 20+ major insurers','Claims scrubbing to catch errors before submission','Real-time status tracking across all scheme portals','One-click resubmission for rejected or queried claims'],
-   metric:{v:'92%',l:'First-pass claim approval rate'},sub:[{v:'11 days',l:'Avg settlement'},{v:'60%',l:'Fewer rejections'}]},
-  {id:'discharge',label:'Discharge',icon:<Ic.File/>,title:'Discharge Summaries',badge:'AI-Generated · LLM-Powered',tagline:'Structured, scheme-compliant summaries drafted in under 5 minutes.',col:'cyan',
-   feats:['LLM-generated structured discharge summaries from EMR data','ICD-10 / CPT auto-coding with clinical context awareness','Scheme-specific formatting for CGHS, TPA, AB-PMJAY portals','Physician review workflow with tracked edits and approvals','Completeness quality checks before billing handoff','Full audit trail for NABH accreditation and compliance'],
-   metric:{v:'87%',l:'Reduction in documentation time'},sub:[{v:'<5 min',l:'Per summary'},{v:'99%',l:'Coding accuracy'}]},
-];
-const MC={
-  sky:{border:'border-sky-500/35',bg:'bg-sky-500/10',text:'text-sky-300',icon:'bg-sky-500/12 border border-sky-500/24 text-sky-400',badge:'bg-sky-500/12 border-sky-500/24 text-sky-300',
-       tab:'border-sky-500/40 bg-sky-500/10 text-sky-300',metric:'border-sky-500/28'},
-  teal:{border:'border-teal-500/35',bg:'bg-teal-500/10',text:'text-teal-300',icon:'bg-teal-500/12 border border-teal-500/24 text-teal-400',badge:'bg-teal-500/12 border-teal-500/24 text-teal-300',
-        tab:'border-teal-500/40 bg-teal-500/10 text-teal-300',metric:'border-teal-500/28'},
-  cyan:{border:'border-cyan-500/35',bg:'bg-cyan-500/10',text:'text-cyan-300',icon:'bg-cyan-500/12 border border-cyan-500/24 text-cyan-400',badge:'bg-cyan-500/12 border-cyan-500/24 text-cyan-300',
-        tab:'border-cyan-500/40 bg-cyan-500/10 text-cyan-300',metric:'border-cyan-500/28'},
-};
-function Modules(){
-  const [a,setA]=useState(0);
-  const mod=MODS[a];const c=MC[mod.col];
-  return(
-    <section id="modules" className="py-28">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="text-center mb-12 reveal">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 text-sky-300 text-xs font-bold mb-5 uppercase tracking-widest">Key Modules</div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">Built for Every Touchpoint<br/><span className="grad">in the Revenue Cycle</span></h2>
-        </div>
-        <div className="flex flex-wrap justify-center gap-3 mb-10 reveal">
-          {MODS.map((m,i)=>{const tc=MC[m.col];return(
-            <button key={m.id} onClick={()=>setA(i)} className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl border text-sm font-semibold transition-all duration-200 cursor-pointer ${a===i?tc.tab:'border-slate-700 text-slate-400 hover:border-slate-600 hover:text-slate-300'}`}>
-              <span className="w-4 h-4">{m.icon}</span>{m.label}
-            </button>
-          );})}
-        </div>
-        <div className="glass glow p-8 md:p-10 reveal">
-          <div className="grid md:grid-cols-2 gap-10 items-start">
-            <div>
-              <span className={`inline-flex items-center px-3 py-1 rounded-lg border text-xs font-bold mb-5 ${c.badge}`}>{mod.badge}</span>
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center p-2 flex-shrink-0 ${c.icon}`}>{mod.icon}</div>
-                <h3 className="text-white font-extrabold text-2xl">{mod.title}</h3>
-              </div>
-              <p className={`text-sm mb-6 ${c.text}`}>{mod.tagline}</p>
-              <ul className="space-y-3">
-                {mod.feats.map(f=>(
-                  <li key={f} className="flex items-start gap-3">
-                    <span className={`w-4 h-4 mt-0.5 flex-shrink-0 ${c.text}`}><Ic.Check/></span>
-                    <span className="text-slate-300 text-sm leading-relaxed">{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="flex flex-col gap-4">
-              <div className={`rounded-2xl border p-8 text-center ${c.metric} ${c.bg}`}>
-                <div className="text-6xl font-extrabold stat mb-2">{mod.metric.v}</div>
-                <div className="text-slate-400 text-sm">{mod.metric.l}</div>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                {mod.sub.map(({v,l})=>(
-                  <div key={l} className={`rounded-xl border p-4 text-center ${c.metric} ${c.bg}`}>
-                    <div className="text-2xl font-extrabold stat">{v}</div>
-                    <div className="text-slate-500 text-xs mt-0.5">{l}</div>
-                  </div>
-                ))}
-              </div>
-              <button className={`px-6 py-3 rounded-xl border text-sm font-semibold transition-all duration-200 cursor-pointer ${c.border} ${c.text} hover:${c.bg}`}>
-                See {mod.label} in Action →
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ── Trust ── */
-function Trust(){
-  const stats=[{v:'50+',l:'Hospitals Onboarded',i:<Ic.Building/>},{v:'₹200Cr+',l:'Claims Processed',i:<Ic.DB/>},{v:'6',l:'Scheme Integrations',i:<Ic.Shield/>},{v:'99.5%',l:'Platform Uptime SLA',i:<Ic.Activity/>}];
-  const badges=[{l:'ABDM Compliant',s:'Ayushman Bharat Digital Mission'},{l:'HIPAA-Aligned',s:'Patient Data Protection'},{l:'ISO 27001',s:'Information Security'},{l:'NABH Ready',s:'Accreditation Documentation'}];
-  const testimonials=[
-    {q:'OneMed AI cut our claims settlement cycle from 38 days to 11 days. Our finance team can actually focus on growth now instead of chasing TPA follow-ups.',n:'Dr. Avinash Reddy',r:'CEO, Reddy Hospitals Group',loc:'Hyderabad · 4 Hospitals'},
-    {q:'We were haemorrhaging 15% revenue to undercoding and unbilled services. OneMed surfaced it in week one. ROI was visible before the first month closed.',n:'Priya Shankar',r:'CFO, Lifeline Healthcare Chain',loc:'Coimbatore · 6 Hospitals'},
-  ];
-  return(
-    <section id="trust" className="py-28 relative">
-      <div className="absolute inset-0" style={{background:'radial-gradient(ellipse 50% 40% at 50% 50%,rgba(20,184,166,.06) 0%,transparent 70%)'}}/>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16 reveal">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-teal-500/30 bg-teal-500/10 text-teal-300 text-xs font-bold mb-5 uppercase tracking-widest">Trusted by Hospitals</div>
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">Built for Indian Healthcare.<br/><span className="grad">Proven in the Field.</span></h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          {stats.map(({v,l,i},idx)=>(
-            <div key={l} className="glass glass-h p-6 text-center reveal" style={{transitionDelay:`${idx*80}ms`}}>
-              <div className="w-7 h-7 mx-auto mb-3 text-sky-400">{i}</div>
-              <div className="text-3xl font-extrabold stat mb-1">{v}</div>
-              <div className="text-slate-500 text-xs leading-snug">{l}</div>
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-wrap justify-center gap-3 mb-10 reveal">
-          {badges.map(({l,s})=>(
-            <div key={l} className="flex items-center gap-3 px-4 py-2.5 glass rounded-xl">
-              <span className="w-4 h-4 text-teal-400 flex-shrink-0"><Ic.Shield/></span>
-              <div><div className="text-white text-xs font-bold">{l}</div><div className="text-slate-500 text-xs">{s}</div></div>
-            </div>
-          ))}
-        </div>
-        <div className="grid md:grid-cols-2 gap-5">
-          {testimonials.map(({q,n,r,loc},i)=>(
-            <div key={n} className="glass glass-h p-7 reveal" style={{transitionDelay:`${i*120}ms`}}>
-              <div className="text-sky-400 text-4xl font-serif leading-none mb-3">"</div>
-              <p className="text-slate-300 text-sm leading-relaxed italic mb-6">{q}</p>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-sky-500/15 border border-sky-500/25 flex items-center justify-center text-sky-300 text-sm font-bold flex-shrink-0">
-                  {n.split(' ').map(x=>x[0]).join('').slice(0,2)}
-                </div>
-                <div>
-                  <div className="text-white text-sm font-semibold">{n}</div>
-                  <div className="text-slate-500 text-xs">{r}</div>
-                  <div className="text-slate-600 text-xs">{loc}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ── CTA ── */
-function CTA(){
-  return(
-    <section id="cta" className="py-28">
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="aborder reveal">
-          <div className="glass p-12 md:p-16 relative overflow-hidden rounded-[18px]">
-            <div className="absolute inset-0 grid-bg opacity-20"/>
-            <div className="absolute inset-0" style={{background:'radial-gradient(ellipse 70% 60% at 50% 50%,rgba(14,165,233,.11) 0%,transparent 70%)'}}/>
-            <div className="relative z-10 text-center">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-sky-500/30 bg-sky-500/10 text-sky-300 text-xs font-bold mb-6 uppercase tracking-widest">
-                <span className="w-4 h-4"><Ic.Zap/></span> Get Started Today
-              </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 leading-tight">Ready to Automate<br/><span className="grad">Your Revenue Cycle?</span></h2>
-              <p className="text-slate-400 text-lg mb-10 max-w-lg mx-auto leading-relaxed">See OneMed AI working with your hospital's scheme data. 30-minute demo. No commitment required.</p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button className="cta px-9 py-4 rounded-xl text-white font-bold text-base cursor-pointer flex items-center gap-2">Book a Free Demo <span className="w-4 h-4"><Ic.Arrow/></span></button>
-                <button className="glass glass-h px-9 py-4 rounded-xl text-slate-300 hover:text-white font-semibold text-base cursor-pointer">Talk to Sales</button>
-              </div>
-              <p className="text-slate-600 text-xs mt-7">Avg. implementation: 3–4 weeks · ABDM-compliant · NDA available · SOC2-aligned</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ── Footer ── */
-function Footer(){
-  return(
-    <footer className="border-t border-slate-800/50 py-10">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-sky-500 flex items-center justify-center p-1.5"><Ic.Activity/></div>
-          <span className="font-bold text-white">OneMed <span className="text-sky-400">AI</span></span>
-        </div>
-        <div className="flex flex-wrap justify-center gap-5 text-slate-500 text-sm">
-          {['Privacy Policy','Terms of Service','Security','Contact Us'].map(l=><a key={l} href="#" className="hover:text-slate-300 transition-colors cursor-pointer">{l}</a>)}
-        </div>
-        <p className="text-slate-700 text-xs">© 2025 OneMed AI. All rights reserved.</p>
-      </div>
-    </footer>
-  );
-}
-
-/* ── App ── */
-function App(){
-  useEffect(()=>{
-    const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')}),{threshold:.08,rootMargin:'0px 0px -40px 0px'});
-    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-    return()=>obs.disconnect();
-  },[]);
-  return(
-    <div style={{background:'#020C1B'}}>
-      <Navbar/>
-      <Hero/>
-      <div className="divider mx-8 md:mx-16"/>
-      <Problem/>
-      <div className="divider mx-8 md:mx-16"/>
-      <Solution/>
-      <div className="divider mx-8 md:mx-16"/>
-      <Modules/>
-      <div className="divider mx-8 md:mx-16"/>
-      <Trust/>
-      <div className="divider mx-8 md:mx-16"/>
-      <CTA/>
-      <Footer/>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">See it in action</a>
+      <button class="btn-ghost" aria-label="Read our whitepaper">
+        Whitepaper
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </div>
-  );
-}
+  </div>
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+  <div class="hero-right" aria-hidden="true">
+    <canvas class="visual-canvas" id="heroCanvas" role="presentation"></canvas>
+  </div>
+</section>
+
+<!-- ── STATS ──────────────────────────────────────────────── -->
+<div class="stats-strip" id="statsStrip" role="region" aria-label="Platform statistics">
+  <div class="stat-item">
+    <div class="stat-label">Hospitals Deployed</div>
+    <div class="stat-value"><span class="stat-num" data-target="340">0</span><span class="stat-unit">+</span></div>
+    <div class="stat-sublabel">Across 18 Indian states</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">Decisions Augmented</div>
+    <div class="stat-value"><span class="stat-num" data-target="2" data-suffix="M">0</span><span class="stat-unit">M+</span></div>
+    <div class="stat-sublabel">Clinical decisions per month</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">Diagnostic Accuracy</div>
+    <div class="stat-value"><span class="stat-num" data-target="94">0</span><span class="stat-unit">%</span></div>
+    <div class="stat-sublabel">Validated on AIIMS datasets</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-label">Avg. Response Time</div>
+    <div class="stat-value"><span class="stat-num" data-target="1" data-decimal="true">0</span><span class="stat-unit">.<span id="decimal">2</span>s</span></div>
+    <div class="stat-sublabel">Real-time inference latency</div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ── SCROLL: nav style ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  /* ── INTERSECTION OBSERVER: reveal on enter ── */
+  const revealEls = document.querySelectorAll(
+    '.label-tag, .line-inner, .hero-body, .hero-actions, .visual-canvas, #statsStrip'
+  );
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+
+  /* ── CANVAS VISUAL: clinical data art ── */
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, raf;
+
+  const ACCENT = '#00E5CC';
+  const WHITE  = 'rgba(240,240,242,';
+  const GREY   = 'rgba(58,58,74,';
+
+  /* Node positions for a stylized clinical workflow graph */
+  const NODES_DEF = [
+    { id: 0, rx: 0.08, ry: 0.22, label: 'INTAKE',    active: false },
+    { id: 1, rx: 0.30, ry: 0.14, label: 'TRIAGE',    active: false },
+    { id: 2, rx: 0.30, ry: 0.44, label: 'LAB',       active: false },
+    { id: 3, rx: 0.55, ry: 0.28, label: 'DIAGNOSIS',  active: true  },
+    { id: 4, rx: 0.55, ry: 0.62, label: 'IMAGING',   active: false },
+    { id: 5, rx: 0.78, ry: 0.18, label: 'AI MODEL',  active: true  },
+    { id: 6, rx: 0.78, ry: 0.50, label: 'CARE PLAN', active: false },
+    { id: 7, rx: 0.96, ry: 0.34, label: 'OUTCOME',   active: false },
+  ];
+
+  const EDGES = [
+    [0,1],[0,2],[1,3],[2,3],[2,4],[3,5],[3,6],[4,6],[5,7],[6,7]
+  ];
+
+  let nodes = [];
+  let pulses = []; // travelling dots along edges
+  let t = 0;
+
+  function resize() {
+    W = canvas.offsetWidth;
+    H = canvas.offsetHeight;
+    canvas.width  = W * devicePixelRatio;
+    canvas.height = H * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+    nodes = NODES_DEF.map(n => ({
+      ...n,
+      x: n.rx * W,
+      y: n.ry * H,
+      pulse: 0,
+      hovered: false,
+    }));
+  }
+
+  /* spawn a travelling pulse on a random edge every ~1.4s */
+  let lastSpawn = 0;
+  function spawnPulse(ts) {
+    if (ts - lastSpawn > 1400) {
+      const edge = EDGES[Math.floor(Math.random() * EDGES.length)];
+      pulses.push({ from: edge[0], to: edge[1], t: 0, speed: 0.006 + Math.random() * 0.004 });
+      lastSpawn = ts;
+    }
+  }
+
+  /* ECG-style waveform data (normalised 0-1) */
+  const ECG = [0.5,0.5,0.5,0.52,0.54,0.5,0.5,0.2,0.9,0.15,0.6,0.55,0.5,0.5,0.5,0.5];
+
+  function drawECG(x, y, w, h, progress) {
+    const pts = ECG;
+    const step = w / (pts.length - 1);
+    const visible = Math.floor(progress * pts.length);
+    if (visible < 2) return;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.moveTo(x, y + h * (1 - pts[0]));
+    for (let i = 1; i < visible; i++) {
+      ctx.lineTo(x + i * step, y + h * (1 - pts[i]));
+    }
+    ctx.strokeStyle = ACCENT;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 0.9;
+    ctx.stroke();
+
+    /* leading glow dot */
+    const lx = x + (visible - 1) * step;
+    const ly = y + h * (1 - pts[visible - 1]);
+    ctx.beginPath();
+    ctx.arc(lx, ly, 3, 0, Math.PI * 2);
+    ctx.fillStyle = ACCENT;
+    ctx.globalAlpha = 1;
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function frame(ts) {
+    ctx.clearRect(0, 0, W, H);
+    t += 0.012;
+
+    spawnPulse(ts);
+
+    /* ── draw edges ── */
+    EDGES.forEach(([a, b]) => {
+      const na = nodes[a], nb = nodes[b];
+      ctx.beginPath();
+      ctx.moveTo(na.x, na.y);
+      /* slight curve via midpoint offset */
+      const mx = (na.x + nb.x) / 2;
+      const my = (na.y + nb.y) / 2 - 12;
+      ctx.quadraticCurveTo(mx, my, nb.x, nb.y);
+      ctx.strokeStyle = GREY + '0.7)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    /* ── travelling pulses ── */
+    pulses = pulses.filter(p => p.t <= 1);
+    pulses.forEach(p => {
+      p.t += p.speed;
+      const na = nodes[p.from], nb = nodes[p.to];
+      /* quadratic interpolation matching edge curve */
+      const mx = (na.x + nb.x) / 2;
+      const my = (na.y + nb.y) / 2 - 12;
+      const t2 = p.t;
+      const x = (1-t2)*(1-t2)*na.x + 2*(1-t2)*t2*mx + t2*t2*nb.x;
+      const y = (1-t2)*(1-t2)*na.y + 2*(1-t2)*t2*my + t2*t2*nb.y;
+
+      ctx.beginPath();
+      ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = ACCENT;
+      ctx.globalAlpha = 0.8;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      /* brief pulse on destination node */
+      if (p.t > 0.88) {
+        nodes[p.to].pulse = Math.min(1, nodes[p.to].pulse + 0.08);
+      }
+    });
+
+    /* ── draw nodes ── */
+    nodes.forEach(n => {
+      n.pulse = Math.max(0, n.pulse - 0.025);
+
+      const isActive = n.active;
+      const r = isActive ? 6 : 4;
+
+      /* ripple on active / pulsed nodes */
+      if (n.pulse > 0.05 || isActive) {
+        const rippleR = r + (isActive ? 14 : 18) * (isActive ? (0.5 + 0.5 * Math.sin(t * 1.4 + n.id)) : n.pulse);
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, rippleR, 0, Math.PI * 2);
+        ctx.strokeStyle = ACCENT;
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = isActive ? 0.12 : n.pulse * 0.3;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
+
+      /* node dot */
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = isActive ? ACCENT : WHITE + '0.18)';
+      ctx.fill();
+
+      if (!isActive) {
+        ctx.strokeStyle = GREY + '0.9)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      /* label */
+      ctx.font = `400 9px 'JetBrains Mono', monospace`;
+      ctx.fillStyle = isActive ? ACCENT : WHITE + '0.35)';
+      ctx.letterSpacing = '0.08em';
+      ctx.textAlign = 'center';
+      ctx.fillText(n.label, n.x, n.y + r + 14);
+    });
+
+    /* ── ECG strip in bottom-right corner ── */
+    const ecgW = Math.min(W * 0.55, 280);
+    const ecgH = 36;
+    const ecgX = W - ecgW - 8;
+    const ecgY = H - ecgH - 32;
+    const ecgProgress = 0.5 + 0.5 * Math.sin(t * 0.4);
+    drawECG(ecgX, ecgY, ecgW, ecgH, ecgProgress);
+
+    /* ECG label */
+    ctx.font = `400 9px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = WHITE + '0.22)';
+    ctx.textAlign = 'left';
+    ctx.fillText('ECG · LIVE', ecgX, ecgY - 8);
+
+    /* ── fine grid lines (subtle depth) ── */
+    ctx.save();
+    ctx.globalAlpha = 0.025;
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 1;
+    for (let gx = 0; gx < W; gx += 48) {
+      ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, H); ctx.stroke();
+    }
+    for (let gy = 0; gy < H; gy += 48) {
+      ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(W, gy); ctx.stroke();
+    }
+    ctx.restore();
+
+    raf = requestAnimationFrame(frame);
+  }
+
+  /* start animation when canvas becomes visible */
+  const canvasObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        resize();
+        raf = requestAnimationFrame(frame);
+        canvasObserver.unobserve(canvas);
+      }
+    });
+  }, { threshold: 0.1 });
+  canvasObserver.observe(canvas);
+
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(raf);
+    resize();
+    raf = requestAnimationFrame(frame);
+  }, { passive: true });
+
+  /* ── STAT COUNTER ANIMATION ── */
+  function animateCounters() {
+    document.querySelectorAll('.stat-num').forEach(el => {
+      const target = parseFloat(el.dataset.target);
+      const isDecimal = el.dataset.decimal === 'true';
+      const duration = 1800;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        /* ease out cubic */
+        const ease = 1 - Math.pow(1 - p, 3);
+        const val = isDecimal
+          ? (target * ease).toFixed(1)
+          : Math.round(target * ease);
+        el.textContent = val;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounters();
+        statsObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  statsObserver.observe(document.getElementById('statsStrip'));
+
+})();
 </script>
 </body>
 </html>
